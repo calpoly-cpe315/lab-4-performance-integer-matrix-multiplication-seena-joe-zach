@@ -31,4 +31,13 @@
 	.arch armv8-a
 	.global matmul
 matmul:
+// x0 is pointer to first element of result Matrix "C"
+// x1 is pointer to first element of Matrix "A"	
+// x2 is pointer to first element of Matrix "B"
+// x3 is height of Matrix "A": "hA"
+// x4 is height of width of Matrix "A": "wA"
+// x5 is height of width of Matrix "B": "wB" 
+// x19 for "sum"
+// x20 for loop 1 : "i"
+// x21 for loop 2 : "j"
 
