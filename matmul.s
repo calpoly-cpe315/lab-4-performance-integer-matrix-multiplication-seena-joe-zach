@@ -58,17 +58,17 @@ matmul:
     mov    x24, x5
 
     mov    x26, xzr // setting loop variables to 0
-    mov    x27, xzr
-    mov    x28, xzr
 
 iLoop:
     cmp    x26, x22
     b.eq   endILoop  
-    
+    mov    x27, xzr
+
 jLoop:
     cmp    x27, x24
     b.eq   endJLoop
     mov    x25, xzr
+    mov    x28, xzr
     
 kLoop:
     cmp    x28, x23
@@ -77,19 +77,46 @@ kLoop:
     // sum += A[i * wA + k] * B[k * wB + j];
     mov    x0, x26
     mov    x1, x23
+
     bl     intmul // i * wA
+    //mul    x0, x1, x0
+
     mov	   x1, x28 
+   
     bl     intadd // (i * wA) + k == x0 + x1
+    //add    x0, x1, x0
+
     mov    x8, x0 // storing index result in temp x8
     mov    x0, x28 // moving k to x0
     mov    x1, x24 // moving wB to x1
+
     bl     intmul // k * wB
+    //mul    x0, x1, x0
+
     mov    x1, x27 // moving j to x1
+
     bl     intadd // (k * wB) + j == x0 + x1
+    //add    x0, x1, x0
+
     mov    x9, x0 // storing result index in temp x9
-    ldr    w0, [x20, x8]  // loading values from matrix by index offset
-    ldr    w1, [x21, x9]
+    
+    mov    x1, #4
+    
+    mul    x8, x8, x1
+    mul    x9, x9, x1    
+
+
+
+    add    x8, x20, x8
+    add    x9, x21, x9   
+
+    ldr  w0, [x8]  // loading values from matrix by index offset
+    ldr  w1, [x9]
+    
     bl     intmul  //  A[i * wA + k] * B[k * wB + j];
+    //mul    x0, x1, x0
+
+
     add    x25, x25, x0 // sum += above
     
     // k++
@@ -100,9 +127,17 @@ endKLoop:
     //C[i * wB + j] = sum;
     mov    x0, x26
     mov    x1, x24
+    
     bl     intmul // i * wB
+    //mul    x0, x0, x1
+
     mov    x1, x27 
+    
     bl     intadd // previous value + j
+    //add    x0, x1, x0   
+    
+    mov    x1, #4
+    mul    x0, x0, x1 
     str    w25, [x19, x0] // loads to C[]
     
     // j++
