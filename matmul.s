@@ -77,19 +77,19 @@ kLoop:
     // sum += A[i * wA + k] * B[k * wB + j];
     mov    x0, x26
     mov    x1, x23
-    b      intmul // i * wA
+    bl     intmul // i * wA
     mov	   x1, x28 
-    b      intadd // (i * wA) + k == x0 + x1
+    bl     intadd // (i * wA) + k == x0 + x1
     mov    x8, x0 // storing index result in temp x8
     mov    x0, x28 // moving k to x0
     mov    x1, x24 // moving wB to x1
-    b      intmul // k * wB
+    bl     intmul // k * wB
     mov    x1, x27 // moving j to x1
-    b      intadd // (k * wB) + j == x0 + x1
+    bl     intadd // (k * wB) + j == x0 + x1
     mov    x9, x0 // storing result index in temp x9
-    ldr    x0, [x19, x8]  // loading values from matrix by index offset
-    ldr    x1, [x20, x9]
-    b      intmul  //  A[i * wA + k] * B[k * wB + j];
+    ldr    w0, [x20, x8]  // loading values from matrix by index offset
+    ldr    w1, [x21, x9]
+    bl     intmul  //  A[i * wA + k] * B[k * wB + j];
     add    x25, x25, x0 // sum += above
     
     // k++
@@ -98,12 +98,12 @@ kLoop:
     
 endKLoop:
     //C[i * wB + j] = sum;
-    ldr    x0, x26
-    ldr    x1, x24
+    mov    x0, x26
+    mov    x1, x24
     bl     intmul // i * wB
-    ldr    x1, x27 
+    mov    x1, x27 
     bl     intadd // previous value + j
-    ldr    x19, [x25, x0] // loads to C[]
+    str    w25, [x19, x0] // loads to C[]
     
     // j++
     add    x27, x27, #1
@@ -122,4 +122,7 @@ endILoop:
     ldp    x23, x24, [sp, 48]
     ldp    x25, x26, [sp, 64]
     ldp    x27, x28, [sp, 80]
-    ldp    x29, x30, [sp], 128   
+    ldp    x29, x30, [sp], 128  
+
+    ret
+ 
