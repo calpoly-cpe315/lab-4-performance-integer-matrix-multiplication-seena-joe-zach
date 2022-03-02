@@ -38,7 +38,7 @@ loop:
     
 
 zero:
-    mov x0, #0
+    mov x22, #0
     b finish
 
 
