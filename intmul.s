@@ -32,8 +32,8 @@ loop:
     bl intsub
     mov x20, x0
 
-    cmp x20, 0
-    b.eq finish
+    cmp xzr, x20
+    bge finish
     b loop
     
 
