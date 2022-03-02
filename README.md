@@ -1,6 +1,11 @@
 # cpe315-matmul
 ## Your name(s) here
 
+## State of lab:
+Not completely done, but will discuss tomorrow with professor
+
+
+
 ### To build:
 ```shell
 make clean; make
