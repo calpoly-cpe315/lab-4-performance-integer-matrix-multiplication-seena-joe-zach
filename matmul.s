@@ -78,8 +78,8 @@ kLoop:
     mov    x0, x26
     mov    x1, x23
 
-    //bl     intmul // i * wA
-    mul    x0, x1, x0
+    bl     intmul // i * wA
+    //mul    x0, x1, x0
 
     mov	   x1, x28 
    
@@ -90,8 +90,8 @@ kLoop:
     mov    x0, x28 // moving k to x0
     mov    x1, x24 // moving wB to x1
 
-    //bl     intmul // k * wB
-    mul    x0, x1, x0
+    bl     intmul // k * wB
+    //mul    x0, x1, x0
 
     mov    x1, x27 // moving j to x1
 
@@ -113,8 +113,8 @@ kLoop:
     ldr  w0, [x8]  // loading values from matrix by index offset
     ldr  w1, [x9]
     
-   // bl     intmul  //  A[i * wA + k] * B[k * wB + j];
-    mul    x0, x1, x0
+    bl     intmul  //  A[i * wA + k] * B[k * wB + j];
+    //mul    x0, x1, x0
 
 
     add    x25, x25, x0 // sum += above
