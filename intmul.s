@@ -4,9 +4,10 @@
  
 intmul:
  
-    stp    x29, x30, [sp,-48]!
+    stp    x29, x30, [sp,-64]!
     stp    x19, x20, [sp, 16]
     stp    x21, x22, [sp, 32]
+    stp    x23, x24, [sp, 48]
     
     mov    x19, x0  //a
     mov    x20, x1  //b
@@ -18,8 +19,8 @@ loop:
 
 
     //  if (m % 2 == 1)                
-    and    x25, x20, 1
-    cmp    x25, 1
+    and    x24, x20, 1
+    cmp    x24, 1
     beq    odd
 
 even:
@@ -39,7 +40,7 @@ odd:
     mov x0, x20
     mov x1, -1
     bl intadd
-	  mov x20, x0
+    mov x20, x0
     b even
 	
     
@@ -47,5 +48,6 @@ finish:
     mov    x0, x23
     ldp    x19, x20, [sp, 16]
     ldp    x21, x22, [sp, 32]
-    ldp    x29, x30, [sp], 48    
+    ldp    x23, x24, [sp, 48]
+    ldp    x29, x30, [sp], 64    
     ret
